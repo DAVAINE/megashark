@@ -2,6 +2,7 @@
 use Migrations\AbstractMigration;
 
 class CreateShowtimes extends AbstractMigration
+
 {
     /**
      * Change Method.
