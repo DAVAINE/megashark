@@ -13,9 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Controller;
-
 use Cake\Event\Event;
-
 /**
  * Error Handling Controller
  *
@@ -32,7 +30,6 @@ class ErrorController extends AppController
     {
         $this->loadComponent('RequestHandler');
     }
-
     /**
      * beforeFilter callback.
      *
@@ -42,7 +39,6 @@ class ErrorController extends AppController
     public function beforeFilter(Event $event)
     {
     }
-
     /**
      * beforeRender callback.
      *
@@ -52,10 +48,8 @@ class ErrorController extends AppController
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
-
         $this->viewBuilder()->setTemplatePath('Error');
     }
-
     /**
      * afterFilter callback.
      *

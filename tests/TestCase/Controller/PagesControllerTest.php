@@ -13,7 +13,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Test\TestCase\Controller;
-
 use App\Controller\PagesController;
 use Cake\Core\App;
 use Cake\Core\Configure;
@@ -21,7 +20,6 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use Cake\View\Exception\MissingTemplateException;
-
 /**
  * PagesControllerTest class
  */
@@ -39,7 +37,6 @@ class PagesControllerTest extends IntegrationTestCase
         $this->get('/');
         $this->assertResponseOk();
     }
-
     /**
      * testDisplay method
      *
@@ -52,7 +49,6 @@ class PagesControllerTest extends IntegrationTestCase
         $this->assertResponseContains('CakePHP');
         $this->assertResponseContains('<html>');
     }
-
     /**
      * Test that missing template renders 404 page in production
      *
@@ -62,11 +58,9 @@ class PagesControllerTest extends IntegrationTestCase
     {
         Configure::write('debug', false);
         $this->get('/pages/not_existing');
-
         $this->assertResponseError();
         $this->assertResponseContains('Error');
     }
-
     /**
      * Test that missing template in debug mode renders missing_template error page
      *
@@ -76,13 +70,11 @@ class PagesControllerTest extends IntegrationTestCase
     {
         Configure::write('debug', true);
         $this->get('/pages/not_existing');
-
         $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
         $this->assertResponseContains('Stacktrace');
         $this->assertResponseContains('not_existing.ctp');
     }
-
     /**
      * Test directory traversal protection
      *

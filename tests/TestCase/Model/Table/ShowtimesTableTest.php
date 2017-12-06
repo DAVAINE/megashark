@@ -1,23 +1,19 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
-
 use App\Model\Table\ShowtimesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-
 /**
  * App\Model\Table\ShowtimesTable Test Case
  */
 class ShowtimesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
      * @var \App\Model\Table\ShowtimesTable
      */
     public $Showtimes;
-
     /**
      * Fixtures
      *
@@ -28,7 +24,6 @@ class ShowtimesTableTest extends TestCase
         'app.movies',
         'app.rooms'
     ];
-
     /**
      * setUp method
      *
@@ -40,7 +35,6 @@ class ShowtimesTableTest extends TestCase
         $config = TableRegistry::exists('Showtimes') ? [] : ['className' => ShowtimesTable::class];
         $this->Showtimes = TableRegistry::get('Showtimes', $config);
     }
-
     /**
      * tearDown method
      *
@@ -49,10 +43,8 @@ class ShowtimesTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Showtimes);
-
         parent::tearDown();
     }
-
     /**
      * Test initialize method
      *
@@ -62,7 +54,6 @@ class ShowtimesTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-
     /**
      * Test validationDefault method
      *
@@ -72,7 +63,6 @@ class ShowtimesTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-
     /**
      * Test buildRules method
      *
