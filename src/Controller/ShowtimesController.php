@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
+use Cake\I18n\Time;
 /**
  * Showtimes Controller
  *
  * @property \App\Model\Table\ShowtimesTable $Showtimes
- *
+ * 
  * @method \App\Model\Entity\Showtime[] paginate($object = null, array $settings = [])
  */
 class ShowtimesController extends AppController
@@ -17,9 +18,6 @@ class ShowtimesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Movies', 'Rooms']
-        ];
         $showtimes = $this->paginate($this->Showtimes);
         $this->set(compact('showtimes'));
         $this->set('_serialize', ['showtimes']);
@@ -47,6 +45,8 @@ class ShowtimesController extends AppController
     public function add()
     {
         $showtime = $this->Showtimes->newEntity();
+        $rooms = $this->Showtimes->Rooms->find('list');
+        $movies = $this->Showtimes->Movies->find('list');
         if ($this->request->is('post')) {
             $showtime = $this->Showtimes->patchEntity($showtime, $this->request->getData());
             if ($this->Showtimes->save($showtime)) {
@@ -55,9 +55,9 @@ class ShowtimesController extends AppController
             }
             $this->Flash->error(__('The showtime could not be saved. Please, try again.'));
         }
-        $movies = $this->Showtimes->Movies->find('list');
-        $rooms = $this->Showtimes->Rooms->find('list');
-        $this->set(compact('showtime', 'movies', 'rooms'));
+        $this->set(compact('showtime'));
+        $this->set(compact('movies'));
+        $this->set(compact('rooms'));
         $this->set('_serialize', ['showtime']);
     }
     /**
@@ -72,6 +72,8 @@ class ShowtimesController extends AppController
         $showtime = $this->Showtimes->get($id, [
             'contain' => []
         ]);
+        $rooms = $this->Showtimes->Rooms->find('list');
+        $movies = $this->Showtimes->Movies->find('list');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $showtime = $this->Showtimes->patchEntity($showtime, $this->request->getData());
             if ($this->Showtimes->save($showtime)) {
@@ -80,9 +82,9 @@ class ShowtimesController extends AppController
             }
             $this->Flash->error(__('The showtime could not be saved. Please, try again.'));
         }
-        $movies = $this->Showtimes->Movies->find('list');
-        $rooms = $this->Showtimes->Rooms->find('list');
-        $this->set(compact('showtime', 'movies', 'rooms'));
+        $this->set(compact('showtime'));
+        $this->set(compact('movies'));
+        $this->set(compact('rooms'));
         $this->set('_serialize', ['showtime']);
     }
     /**
@@ -102,5 +104,30 @@ class ShowtimesController extends AppController
             $this->Flash->error(__('The showtime could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function planning()
+    {
+        $rooms = $this->Showtimes->Rooms->find('list');
+        $this->set(compact('rooms'));
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $showtimes = $this->Showtimes
+                ->find('all')
+                ->contain('Movies')
+                ->select(['Movies.name', 'Showtimes.start', 'Showtimes.end'])
+                ->where(['Showtimes.room_id' => $data['room_id'],
+                         'Showtimes.start >=' => (new \DateTime('monday this week')),
+                         'Showtimes.end <' => (new \DateTime('monday next week'))])
+                ->order(['Showtimes.start' => 'ASC']);
+            $this->set('showtimes', $showtimes);
+            
+            $showtimesPerDay = array();
+            foreach($showtimes as $showtime){
+                $numDay = $showtime->start->format('N');
+                $showtimesPerDay[$numDay][] = $showtime;
+            }
+            $this->set('showtimesPerDay', $showtimesPerDay);
+        }    
     }
 }

@@ -7,11 +7,12 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('New Movie'), ['controller' => 'Showtimes', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New Room'), ['controller' => 'Rooms', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('New Showtime'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Movies'), ['controller' => 'Movies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movies'), ['controller' => 'Movies', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Rooms'), ['controller' => 'Rooms', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Rooms'), ['controller' => 'Rooms', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Planning'), ['action' => 'Planning']) ?></li>
     </ul>
 </nav>
 <div class="showtimes index large-9 medium-8 columns content">

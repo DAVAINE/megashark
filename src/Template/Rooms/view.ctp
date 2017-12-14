@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Room $room
+ * @var \Cake\Datasource\EntityInterface $room
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -15,6 +16,7 @@
         <li><?= $this->Html->link(__('New Movies'), ['controller' => 'Movies', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Showtimes'), ['controller' => 'Showtimes', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Showtime'), ['controller' => 'Showtimes', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('Planning'), ['action' => 'Planning']) ?></li>
     </ul>
 </nav>
 <div class="rooms view large-9 medium-8 columns content">
@@ -41,44 +43,28 @@
             <td><?= h($room->modified) ?></td>
         </tr>
     </table>
-    
-    
-    <?php 
-        foreach ($showtimes as $showtime):
-    ?>
-    
     <div>
-    
-    <h3><?= __('Showtimes') ?></h3>
-    
-    <table cellpadding="0" cellspacing="0">
-        <thead>
+        <h4><?= __('Showtimes') ?></h4>
+        <?php 
+            $dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thurday', 'Friday', 'Saturday', 'Sunday'];
+        ?>
+        <?php for($i=1; $i<=7; $i++): ?>
+        <table cellpadding="0" cellspacing="0" style="width: 14.2%;float: left;">
+            <?php (isset($showtimesPerDay[$i]) ? $day = $showtimesPerDay[$i] : $day = null); ?>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('movie_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('room_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('start') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('end') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($showtimes as $showtime): ?>
-            <tr>
-                <td><?= $this->Number->format($showtime->id) ?></td>
-                <td><?= $showtime->movie_id ?></td>
-                <td><?= $room->name?></td>
-                <td><?= h($showtime->start) ?></td>
-                <td><?= h($showtime->end) ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    
+                <th scope="col"><?= __($dayNames[$i-1]) ?></th>
+             </tr>
+            <?php if($day != null): ?>
+                <?php foreach ($day as $showtime): ?>
+                <tr>
+                    <td>
+                        <span><?= h($showtime->movie->name) ?></span>
+                        
+                        <span><?= h($showtime->start->format('H:i')) ?> - <?= h($showtime->end->format('H:i')) ?></span>
+                    </td>
+                <?php endforeach; ?>
+            <?php endif; ?>
+         </table>
+        <?php endfor; ?>
     </div>
-    
-    <?php
-        endforeach;
-    ?> 
-
-
 </div>

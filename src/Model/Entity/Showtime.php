@@ -1,4 +1,9 @@
-Entity
+<?php
+namespace App\Model\Entity;
+use Cake\ORM\Entity;
+use Cake\I18n\Time;
+/**
+ * Showtime Entity
  *
  * @property int $id
  * @property int $movie_id

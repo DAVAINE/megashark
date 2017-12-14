@@ -13,8 +13,9 @@
         <li><?= $this->Html->link(__('New Movie'), ['action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Showtimes'), ['controller' => 'Showtimes', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Showtime'), ['controller' => 'Showtimes', 'action' => 'add']) ?> </li>
-         <li><?= $this->Html->link(__('List Rooms'), ['controller' => 'Rooms', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Rooms'), ['controller' => 'Rooms', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Rooms'), ['controller' => 'Rooms', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Planning'), ['action' => 'Planning']) ?></li>
     </ul>
 </nav>
 <div class="movies view large-9 medium-8 columns content">

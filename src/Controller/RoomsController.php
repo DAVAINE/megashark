@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
+use Cake\I18n\Time;
 /**
  * Rooms Controller
  *
@@ -29,21 +30,31 @@ class RoomsController extends AppController
      */
     public function view($id = null)
     {
-        $room = $this->Rooms->get($id);
+        $room = $this->Rooms->get($id, [
+            'contain' => []
+        ]);
+        $this->set('room', $room);
+        $this->set('_serialize', ['room']);     
         
         $showtimes = $this->Rooms->Showtimes
             ->find()
-            ->select(['id', 'movie_id', 'room_id', 'start', 'end'])
-            ->where(['room_id =' => $room->id])
-            ->order(['created' => 'DESC']);
-            
-        $this->set('showtimes', $showtimes);        
+            ->contain('Movies')
+            ->select(['Movies.name', 'Showtimes.start', 'Showtimes.end'])
+            ->where(['Showtimes.room_id' => $id,
+                     'Showtimes.start >=' => (new \DateTime('Monday this week')),
+                     'Showtimes.end <' => (new \DateTime('Monday next week'))])
+            ->order(['Showtimes.start' => 'ASC']);
+        
+        $showtimesPerDay = array();
+        
+        foreach($showtimes as $showtime){
+            $numDay = $showtime->start->format('N');
+            $showtimesPerDay[$numDay][] = $showtime;
+        }
+        
         $this->set('room', $room);
         $this->set('_serialize', ['room']);
-        
-        $room = $this->Rooms->get($id, [
-            'contain' => ['Showtimes']
-        ]);
+        $this->set('showtimesPerDay', $showtimesPerDay);
     }
     /**
      * Add method
